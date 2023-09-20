@@ -95,11 +95,11 @@ def registration():
         res = dbase.addUser(form.name.data, hash)
         if res:
             flash("Вы успешно зарегистрированы", "success")
-            return redirect(url_for('index'))
+            return redirect(url_for('profile'))
         else:
             flash("Ошибка при добавлении в БД", "error")
 
-    return render_template("registration.html", menu=menu, form=form)
+    return render_template("registration.html", menu=menu, form=form, title="Регистрация")
 
 
 

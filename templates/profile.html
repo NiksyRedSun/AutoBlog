@@ -3,9 +3,6 @@
 
 {% block content %}
 {{ super() }}
-    <div class="sign-wrap-1">
-        <span class="sign_word">ПОЛУНОЧНЫЙ AUTO-BLOG</span>
-    </div>
     <div class="post">
         <div class="nickname">Личный кабинет</div>
         {% for cat, msg in get_flashed_messages(True) %}

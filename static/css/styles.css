@@ -1,7 +1,7 @@
 body {
     background-color: #204c72;
-    margin-left: -1%;
-    margin-right: -1%;
+    /*margin-left: -1%;*/
+    /*margin-right: -1%;*/
 }
 
 
@@ -66,9 +66,36 @@ div.post + div.sign-wrap-3 {
 }
 
 
+p.linename {
+    font-size: 30px;
+    font-weight: bold;
+    /*padding: 0% 3% 3% 3%;*/
+    color: #203c93;
+    font-family: 'Ubuntu Mono', monospace;
+    margin-block-end: 0px;
+    margin-block-start: 0px;
+    padding-bottom: 3%;
+}
 
 
+p.line {
+    margin-block-end: 0px;
+    margin-block-start: 0px;
+    padding-bottom: 2%;
+    /*color: #203c93;*/
+    /*font-family: 'Ubuntu Mono', monospace;*/
+    /*font-size: 30px;*/
+    /*font-weight: bold;*/
+    /*не работает*/
 
+}
+
+
+form {
+    margin-left: 3%;
+    width: 50%;
+    /*display: flex;*/
+}
 
 
 main {
@@ -82,10 +109,11 @@ main {
 
 nav {
     /*margin: 0% 0% 0% 0%;*/
-    width: 20.7%;
+    width: 20.8%;
     float: left;
     position: fixed;
     margin-top: 0.5%;
+    margin-left: -0.7%;
     /*padding-left: -5%;*/
     /*margin-right: 2%;*/
 
