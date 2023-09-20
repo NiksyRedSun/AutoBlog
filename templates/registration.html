@@ -1,0 +1,36 @@
+{% extends "base.html"%}
+
+
+{% block content %}
+{{ super() }}
+    <div class="sign-wrap-1">
+        <span class="sign_word">ПОЛУНОЧНЫЙ AUTO-BLOG</span>
+    </div>
+    <div class="post">
+        <div class="nickname">Регистрация</div>
+        {% for cat, msg in get_flashed_messages(True) %}
+        <div class="flMsg {{cat}}">{{msg}}</div>
+        {% endfor %}
+            <form action="/registration" method="post">
+            {{ form.hidden_tag() }}
+            {% for field in form if field.name not in ['csrf_token', 'submit'] %}
+                <p>{{ field.label() }}
+                {% if field.errors %}
+                    {{ field(class="invalid")}}
+                <span class="invalid-feedback">
+                    {% for e in field.errors %}
+                    {{ e }}
+                    {% endfor %}
+                </span>
+                {% else %}
+                    {{ field() }}
+                {% endif %}
+            {% endfor %}
+            <p>{{ form.submit() }}
+            </form>
+        <div class="dateandtime">21:44 19.09.23</div>
+    </div>
+    <div class="sign-wrap-3">
+        <span class="sign_word">***</span>
+    </div>
+{% endblock %}

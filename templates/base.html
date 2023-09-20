@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/css/styles.css">
+  {% block title %}
+    <meta charset="UTF-8">
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>AUTO-BLOG</title>
+    {% endif %}
+  {% endblock %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inclusive+Sans&family=Source+Code+Pro:ital,wght@1,600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    {% block content %}
+    {% block mainmenu %}
+        <nav>
+        {% for m in menu%}
+        <a href="{{m.url}}" class="menu">{{m.name}}</a>
+        {% endfor %}
+        </nav>
+    {% endblock mainmenu %}
+<main>
+
+    {% endblock %}
+</main>
+</body>
+</html>
+
+
