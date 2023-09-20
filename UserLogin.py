@@ -30,7 +30,7 @@ class UserLogin(UserMixin):
         return self.__user["name"] if self.__user else "Без имени"
 
     def getHash(self):
-        return self.__user["psw"] if self.__user else "Без HASH????"
+        return self.__user["psw"][0:40] if self.__user else "Без HASH????"
 
 
     def getAvatar(self, app):

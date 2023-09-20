@@ -78,17 +78,18 @@ p.linename {
 }
 
 
-p.line {
+input {
     margin-block-end: 0px;
     margin-block-start: 0px;
-    padding-bottom: 2%;
-    /*color: #203c93;*/
-    /*font-family: 'Ubuntu Mono', monospace;*/
-    /*font-size: 30px;*/
-    /*font-weight: bold;*/
-    /*не работает*/
-
+    padding-bottom: 1%;
+    margin-bottom: 1%;
+    color: #203c93;
+    font-size: 30px;
 }
+
+/*input#remember {*/
+/*    s;*/
+/*}*/
 
 
 form {
@@ -97,6 +98,10 @@ form {
     /*display: flex;*/
 }
 
+div.form {
+    margin-left: 3%;
+    width: 50%;
+}
 
 main {
     margin: -1% 20%;

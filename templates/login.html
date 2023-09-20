@@ -23,7 +23,7 @@
                 {% endfor %}
             </span>
             {% else %}
-            <p class="line">{{ field() }}</p>
+            {{ field() }}
             {% endif %}
             {% endfor %}
         <p class="linename">{{ form.remember.label() }} {{ form.remember() }} </p>
