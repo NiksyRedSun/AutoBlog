@@ -60,6 +60,13 @@ div.dateandtime{
     text-align: right;
 }
 
+textarea {
+    width: 99%;
+    font-size: 30px;
+    color: #203c93;
+    font-family: 'Ubuntu Mono', monospace;
+
+}
 
 div.post + div.sign-wrap-3 {
     margin-bottom: -5%;
@@ -98,9 +105,26 @@ form {
     /*display: flex;*/
 }
 
+div.posttext {
+
+}
+
+div.postbut {
+    align-self: end;
+}
+
+form.postform {
+    /*margin-left: 3%;*/
+    width: 94%;
+    display: flex;
+    flex-direction: column;
+}
+
+
 div.form {
     margin-left: 3%;
     width: 50%;
+    /*font-family: 'Ubuntu Mono', monospace;*/
 }
 
 main {

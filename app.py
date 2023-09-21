@@ -5,7 +5,7 @@ import sqlite3
 import os
 from FDataBase import FDataBase
 from werkzeug.security import generate_password_hash, check_password_hash
-from forms import LoginForm, RegisterForm
+from forms import LoginForm, RegisterForm, PostForm
 
 
 
@@ -73,9 +73,30 @@ def close_db(error):
         g.link_db.close()
 
 
-@app.route("/")
+
+
+@app.route("/", methods=["POST", "GET"])
 def index():
-    return render_template("index.html", menu=menu)
+
+    if current_user.is_authenticated:
+        nickname = current_user.getName()
+    else:
+        nickname = None
+    form = PostForm()
+    # print(form.validate_on_submit())
+    if form.validate_on_submit():
+    # if request.method == "POST":
+        # print("Вот тут")
+        posttext = form.post.data
+        postauthor = current_user.getName()
+        res = dbase.addPost(postauthor, posttext)
+        if res:
+            flash("Ваш пост добавлен", "success")
+            return render_template("index.html", menu=menu, nickname=nickname, form=form)
+        else:
+            flash("Ошибка при добавлении поста", "error")
+    # return render_template("index.html", menu=menu)
+    return render_template("index.html", menu=menu, nickname=nickname, form=form)
 
 
 # @app.route("/lcabinet")
@@ -141,7 +162,7 @@ def profile():
 if __name__ == "__main__":
     app.run(debug=True)
 
-#
+
 #
 #
 # if __name__ == "__main__":
