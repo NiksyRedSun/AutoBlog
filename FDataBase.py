@@ -56,6 +56,18 @@ class FDataBase:
         return []
 
 
+    def getTenPosts(self):
+        try:
+            self.__cur.execute(f"SELECT id, usr, text, time FROM posts ORDER BY id ASC")
+            res = self.__cur.fetchall()
+            if res:
+                return res
+        except sqlite3.Error as e:
+            print("Ошибка получения информации из бд" + str(e))
+
+        return []
+
+
     def addUser(self, name, hpsw):
         try:
             self.__cur.execute(f"SELECT COUNT() as `count` FROM users WHERE name LIKE '{name}'")

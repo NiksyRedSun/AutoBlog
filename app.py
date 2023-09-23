@@ -77,7 +77,7 @@ def close_db(error):
 
 @app.route("/", methods=["POST", "GET"])
 def index():
-
+    posts = dbase.getTenPosts()
     if current_user.is_authenticated:
         nickname = current_user.getName()
     else:
@@ -87,16 +87,26 @@ def index():
     if form.validate_on_submit():
     # if request.method == "POST":
         # print("Вот тут")
-        posttext = form.post.data
-        postauthor = current_user.getName()
-        res = dbase.addPost(postauthor, posttext)
-        if res:
-            flash("Ваш пост добавлен", "success")
-            return render_template("index.html", menu=menu, nickname=nickname, form=form)
+        if current_user.is_authenticated:
+            posttext = form.post.data
+            postauthor = current_user.getName()
+            res = dbase.addPost(postauthor, posttext)
+            if res:
+                flash("Ваш пост добавлен", "success")
+                return render_template("index.html", menu=menu, nickname=nickname, form=form, posts=posts)
+            else:
+                flash("Ошибка при добавлении поста", "error")
+
         else:
-            flash("Ошибка при добавлении поста", "error")
+            posttext = form.post.data
+            res = dbase.addPost("Anon", posttext)
+            if res:
+                flash("Ваш пост добавлен", "success")
+                return render_template("index.html", menu=menu, nickname=nickname, form=form, posts=posts)
+            else:
+                flash("Ошибка при добавлении поста", "error")
     # return render_template("index.html", menu=menu)
-    return render_template("index.html", menu=menu, nickname=nickname, form=form)
+    return render_template("index.html", menu=menu, nickname=nickname, form=form, posts=posts)
 
 
 # @app.route("/lcabinet")
