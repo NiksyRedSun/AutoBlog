@@ -1,7 +1,7 @@
 import math
 import sqlite3
 import time
-
+from manyFunc import tmstp_to_str
 
 class FDataBase:
     def __init__(self, db):
@@ -58,8 +58,22 @@ class FDataBase:
 
     def getTenPosts(self):
         try:
-            self.__cur.execute(f"SELECT id, usr, text, time FROM posts ORDER BY id ASC")
+            self.__cur.execute(f"SELECT id, usr, text, time FROM posts ORDER BY id DESC")
             res = self.__cur.fetchall()
+            res = list(map(lambda item: {k: (item[k] if k!="time" else tmstp_to_str(item[k])) for k in item.keys()}, res)) #а вот разберись что тут происходит, если ты такой умный
+            if res:
+                return res[0:10]
+        except sqlite3.Error as e:
+            print("Ошибка получения информации из бд" + str(e))
+
+        return []
+
+
+    def getAllPosts(self):
+        try:
+            self.__cur.execute(f"SELECT id, usr, text, time FROM posts ORDER BY id DESC")
+            res = self.__cur.fetchall()
+            res = list(map(lambda item: {k: (item[k] if k!="time" else tmstp_to_str(item[k])) for k in item.keys()}, res)) #а вот разберись что тут происходит, если ты такой умный
             if res:
                 return res
         except sqlite3.Error as e:
@@ -92,6 +106,18 @@ class FDataBase:
             if not res:
                 print("Пользователь не найден")
                 return False
+
+            return res
+        except sqlite3.Error as e:
+            print("Ошибка получения данных из бд" + str(e))
+
+        return False
+
+
+    def getAllUsers(self):
+        try:
+            self.__cur.execute(f"SELECT * FROM users")
+            res = self.__cur.fetchall()
 
             return res
         except sqlite3.Error as e:

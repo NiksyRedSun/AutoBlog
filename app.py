@@ -6,6 +6,7 @@ import os
 from FDataBase import FDataBase
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import LoginForm, RegisterForm, PostForm
+from admin.admin import admin
 
 
 
@@ -16,7 +17,9 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.update(dict(DATABASE=os.path.join(app.root_path, 'flsite.db')))
 
+app.register_blueprint(admin, url_prefix='/admin')
 login_manager = LoginManager(app)
+
 
 login_manager.login_view = 'login'
 login_manager.login_message = ""
@@ -83,39 +86,20 @@ def index():
     else:
         nickname = None
     form = PostForm()
-    # print(form.validate_on_submit())
     if form.validate_on_submit():
-    # if request.method == "POST":
-        # print("Вот тут")
+        posttext = form.post.data
         if current_user.is_authenticated:
-            posttext = form.post.data
             postauthor = current_user.getName()
             res = dbase.addPost(postauthor, posttext)
-            if res:
-                flash("Ваш пост добавлен", "success")
-                return render_template("index.html", menu=menu, nickname=nickname, form=form, posts=posts)
-            else:
-                flash("Ошибка при добавлении поста", "error")
-
         else:
-            posttext = form.post.data
             res = dbase.addPost("Anon", posttext)
-            if res:
-                flash("Ваш пост добавлен", "success")
-                return render_template("index.html", menu=menu, nickname=nickname, form=form, posts=posts)
-            else:
-                flash("Ошибка при добавлении поста", "error")
-    # return render_template("index.html", menu=menu)
+        if res:
+            flash("Ваш пост добавлен", "success")
+            return redirect(url_for("index"))
+        else:
+            flash("Ошибка при добавлении поста", "error")
+
     return render_template("index.html", menu=menu, nickname=nickname, form=form, posts=posts)
-
-
-# @app.route("/lcabinet")
-# def lcabinet():
-#
-#     # return redirect(url_for('registration'))
-#     return redirect(url_for('login'))
-#
-#     # return render_template("cabin.html", menu=menu)
 
 
 @app.route("/registration", methods=["POST", "GET"])
