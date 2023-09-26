@@ -1,7 +1,7 @@
 import sqlite3
 
 from flask import Blueprint, render_template, request, g, flash, abort, redirect, url_for, make_response, session
-from forms import LoginForm, RegisterForm, PostForm
+from forms import LoginForm, DeletePostsForm
 
 admin = Blueprint('admin', __name__, template_folder="templates", static_folder="static")
 from FDataBase import FDataBase
@@ -21,9 +21,9 @@ def logout_admin():
 
 
 menu = [
-        {"name": "Личный кабинет", "url": "profile"},
-        {"name": "Регистрация", "url": "registration"},
-        {"name": "Блог", "url": "/"}
+        {"name": "Личный кабинет", "url": "../profile"},
+        {"name": "Регистрация", "url": "../registration"},
+        {"name": "Блог", "url": "../"}
         ]
 
 
@@ -80,13 +80,20 @@ def logout():
 
 
 
-@admin.route("/list-pubs")
+@admin.route("/list-pubs", methods=["POST", "GET"])
 def listpubs():
     if not isLogged():
         return redirect(url_for('.login'))
 
-    posts = dbase.getAllPosts()
-    return render_template("admin/list-pubs.html", title="Список статей", menu=menu, posts=posts)
+    form, ids = DeletePostsForm(dbase.getAllPosts())
+    if form.validate_on_submit():
+        for id in ids:
+            if form.__getattribute__(id).data:
+                dbase.deletePost(ids[id])
+        flash("Указанные посты, удалены", "success")
+        return redirect(url_for('.listpubs'))
+
+    return render_template("admin/list-pubs.html", title="Список статей", menu=menu, form=form)
 
 
 

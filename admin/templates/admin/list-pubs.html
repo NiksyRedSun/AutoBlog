@@ -9,11 +9,14 @@
         <div class="flMsg {{cat}}">{{msg}}</div>
         {% endfor %}
         <div class="text">
-            {% for post in posts %}
-            <div>{{ post.id }}</div>
-            <div>{{ post.usr }}</div>
-            <div>{{ post.text }}</div>
+        <form action="" method="post" class="postform">
+            {{ form.hidden_tag() }}
+            {% for field in form if field.name not in ['csrf_token', 'submit']%}
+            <div>{{ field() }} {{ field.label }}</div>
+                <br>
             {% endfor %}
+        <p>{{ form.submit() }} </p>
+        </form>
         </div>
         <div class="dateandtime">//////////////</div>
     </div>

@@ -24,7 +24,7 @@
     {% block mainmenu %}
         <nav>
         {% for m in menu%}
-        <a href="{{m.url}}" class="menu">{{m.name}}</a>
+        <a href="{{ m.url }}" class="menu">{{m.name}}</a>
         {% endfor %}
         </nav>
     {% endblock mainmenu %}

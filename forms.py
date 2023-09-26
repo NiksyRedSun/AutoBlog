@@ -22,3 +22,18 @@ class PostForm(FlaskForm):
     post = TextAreaField("Поле", validators=[Length(min=30, max=300, message="Должен быть от 30 до 300 символов")])
     submit = SubmitField("Загрузить")
 
+
+def DeletePostsForm(posts):
+    class DeletePostForm(FlaskForm):
+        pass
+
+    DeletePostForm.submit = SubmitField("Удалить посты")
+    ids = {}
+    for post in posts:
+        ids["id" + str(post['id'])] = post['id']
+        postname = f"ID поста: {post['id']} Автор: {post['usr']}\n Текст: {post['text']}"
+        setattr(DeletePostForm, "id" + str(post['id']), BooleanField(postname, default=False))
+
+    form = DeletePostForm()
+    return form, ids
+

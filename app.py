@@ -7,6 +7,7 @@ from FDataBase import FDataBase
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import LoginForm, RegisterForm, PostForm
 from admin.admin import admin
+from manyFunc import badlang_correct
 
 
 
@@ -88,6 +89,7 @@ def index():
     form = PostForm()
     if form.validate_on_submit():
         posttext = form.post.data
+        posttext = badlang_correct(posttext)
         if current_user.is_authenticated:
             postauthor = current_user.getName()
             res = dbase.addPost(postauthor, posttext)
@@ -123,6 +125,7 @@ def login():
     # if current_user.is_authenticated:
     #     return redirect(url_for("profile"))
     form = LoginForm()
+    print(form.remember)
     if form.validate_on_submit():
         user = dbase.getUserByName(form.name.data)
         if user and check_password_hash(user['psw'], form.psw.data):
