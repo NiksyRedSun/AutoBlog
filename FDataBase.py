@@ -9,18 +9,6 @@ class FDataBase:
         self.__cur = db.cursor()
 
 
-    def getMenu(self):
-        sql = '''SELECT * FROM mainmenu'''
-        try:
-            self.__cur.execute(sql)
-            res = self.__cur.fetchall()
-            if res:
-                return res
-        except:
-            print("Ошибка чтения из БД")
-        return []
-
-
     def addPost(self, author, text):
         try:
             tm = math.floor(time.time())
@@ -81,13 +69,13 @@ class FDataBase:
 
         return []
 
+
     def deletePost(self, id):
         try:
             self.__cur.execute(f"DELETE FROM posts WHERE id LIKE '{id}'")
             self.__db.commit()
         except sqlite3.Error as e:
             print("Ошибка получения информации из бд" + str(e))
-
 
 
     def addUser(self, name, hpsw):
