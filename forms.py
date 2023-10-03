@@ -30,9 +30,9 @@ def DeletePostsForm(posts):
     DeletePostForm.submit = SubmitField("Удалить посты")
     ids = {}
     for post in posts:
-        ids["id" + str(post['id'])] = post['id']
-        postname = f"ID поста: {post['id']} Автор: {post['usr']}\n Текст: {post['text']}"
-        setattr(DeletePostForm, "id" + str(post['id']), BooleanField(postname, default=False))
+        ids["id" + str(post.id)] = post.id
+        postname = f"ID поста: {post.id} Автор: {post.usr}\n Текст: {post.text}"
+        setattr(DeletePostForm, "id" + str(post.id), BooleanField(postname, default=False))
 
     form = DeletePostForm()
     return form, ids

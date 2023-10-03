@@ -4,7 +4,7 @@
 {% block content %}
 {{ super() }}
     <div class="post">
-        <div class="nickname">Посты на сайте</div>
+        <div class="nickname">Пользователи зарегистрированные на сайте</div>
         {% for cat, msg in get_flashed_messages(True) %}
         <div class="flMsg {{cat}}">{{msg}}</div>
         {% endfor %}

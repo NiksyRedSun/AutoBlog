@@ -2,9 +2,12 @@ import sqlite3
 
 from flask import Blueprint, render_template, request, g, flash, abort, redirect, url_for, make_response, session
 from forms import LoginForm, DeletePostsForm
+from models import getAllPosts, deletePosts, getAllUsers
+
+
+
 
 admin = Blueprint('admin', __name__, template_folder="templates", static_folder="static")
-from FDataBase import FDataBase
 
 
 
@@ -25,22 +28,6 @@ menu = [
         {"name": "Регистрация", "url": "../registration"},
         {"name": "Блог", "url": "../"}
         ]
-
-
-
-dbase = None
-@admin.before_request
-def before_request():
-    global dbase
-    db = g.get("link_db")
-    dbase = FDataBase(db)
-
-
-@admin.teardown_request
-def teardown_request(request):
-    global dbase
-    dbase = None
-    return request
 
 
 
@@ -85,13 +72,14 @@ def listpubs():
     if not isLogged():
         return redirect(url_for('.login'))
 
-    form, ids = DeletePostsForm(dbase.getAllPosts())
+    form, ids = DeletePostsForm(getAllPosts())
     if form.validate_on_submit():
-        for id in ids:
-            if form.__getattribute__(id).data:
-                dbase.deletePost(ids[id])
-        flash("Указанные посты, удалены", "success")
-        return redirect(url_for('.listpubs'))
+        try:
+            deletePosts(form, ids)
+            flash("Указанные посты, удалены", "success")
+            return redirect(url_for('.listpubs'))
+        except:
+            print("Возникла проблема с удалением постов")
 
     return render_template("admin/list-pubs.html", title="Список статей", menu=menu, form=form)
 
@@ -102,5 +90,5 @@ def listusers():
     if not isLogged():
         return redirect(url_for('.login'))
 
-    users = dbase.getAllUsers()
+    users = getAllUsers()
     return render_template("admin/list-users.html", title="Список пользователей", menu=menu, users=users)

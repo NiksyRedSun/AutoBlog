@@ -9,3 +9,5 @@
 tests.py
 SomeRepos/Chars.db
 flsite.db
+/instance
+/migrations

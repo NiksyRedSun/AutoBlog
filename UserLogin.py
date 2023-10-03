@@ -32,22 +32,3 @@ class UserLogin(UserMixin):
     def getHash(self):
         return self.__user.psw[0:40] if self.__user else "Без HASH????"
 
-
-    # def getAvatar(self, app):
-    #     img = None
-    #     if not self.__user['avatar']:
-    #         try:
-    #             with app.open_resource(app.root_path + url_for("static", filename="images/default.png"), "rb") as f:
-    #                 img = f.read()
-    #         except FileNotFoundError as e:
-    #             print("Не найден аватар по умолчанию" + str(e))
-    #     else:
-    #         img = self.__user['avatar']
-    #
-    #     return img
-
-    def verifyExt(self, filename):
-        ext = filename.rsplit(".", 1)[1]
-        if ext == "png" or ext == "PNG":
-            return True
-        return False
