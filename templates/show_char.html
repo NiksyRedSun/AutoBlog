@@ -1,0 +1,19 @@
+{% extends "base.html"%}
+
+
+{% block content %}
+{{ super() }}
+    <div class="post">
+        <div class="nickname">Персонаж</div>
+        {% for cat, msg in get_flashed_messages(True) %}
+        <div class="flMsg {{cat}}">{{msg}}</div>
+        {% endfor %}
+            {% for line in info %}
+            <div class="show_char">{{ line }}</div>
+            {% endfor %}
+        <div class="dateandtime">////////////////</div>
+    </div>
+    <div class="sign-wrap-3">
+        <span class="sign_word">***</span>
+    </div>
+{% endblock %}

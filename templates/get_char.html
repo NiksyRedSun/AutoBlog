@@ -3,17 +3,15 @@
 
 {% block content %}
 {{ super() }}
-
     <div class="post">
-        <div class="nickname">Регистрация</div>
+        <div class="nickname">Привязка персонажа</div>
         {% for cat, msg in get_flashed_messages(True) %}
         <div class="flMsg {{cat}}">{{msg}}</div>
         {% endfor %}
-            <form action="" method="post">
+        <form action="" method="post">
             {{ form.hidden_tag() }}
-            {% for field in form if field.name not in ['csrf_token', 'submit'] %}
-                <p class="linename">{{ field.label() }}</p>
-                {% if field.errors %}
+                <p class="linename">{{ form.id.label() }}</p>
+                {% if form.id.errors %}
                     {{ field(class="invalid")}}
                 <span class="invalid-feedback">
                     {% for e in field.errors %}
@@ -21,12 +19,11 @@
                     {% endfor %}
                 </span>
                 {% else %}
-                {{ field() }}
+                {{ form.id() }}
                 {% endif %}
-            {% endfor %}
             <p>{{ form.submit() }}</p>
-            </form>
-        <div class="dateandtime">21:44 19.09.23</div>
+        </form>
+        <div class="dateandtime">////////////////</div>
     </div>
     <div class="sign-wrap-3">
         <span class="sign_word">***</span>

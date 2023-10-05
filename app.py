@@ -4,10 +4,10 @@ from UserLogin import UserLogin
 import sqlite3
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
-from forms import LoginForm, RegisterForm, PostForm
+from forms import LoginForm, RegisterForm, PostForm, GetCharForm
 from admin.admin import admin
-from manyFunc import badlang_correct
-from models import db, Users, Posts, addPost, addUser, getTenPosts, getUserByName, getUser
+from manyFunc import badlang_correct, in_web_presentation
+from models import db, Users, Posts, addPost, addUser, getTenPosts, getUserByName, getUser, getCharacter, getCharToUser, getCharacterByUserId
 from flask_migrate import Migrate
 
 
@@ -24,7 +24,7 @@ login_manager = LoginManager(app)
 
 
 db.init_app(app) # вот тут мы создаем нашу бд из models
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, render_as_batch=True)
 
 
 
@@ -37,7 +37,7 @@ login_manager.login_message_category = "error"
 menu = [
         {"name": "Личный кабинет", "url": "profile"},
         {"name": "Регистрация", "url": "registration"},
-        {"name": "Блог", "url": "/"}
+        {"name": "Блог", "url": "index"}
         ]
 
 
@@ -116,15 +116,42 @@ def logout():
 @app.route("/profile")
 @login_required
 def profile():
-    if current_user.is_authenticated:
-        return render_template("profile.html", menu=menu, title="Личный кабинет")
-    return redirect(url_for("login"))
+    return render_template("profile.html", menu=menu, title="Личный кабинет")
+
+
+
+
+@app.route("/profile/get_char", methods=["POST", "GET"])
+@login_required
+def get_char():
+    form = GetCharForm()
+    if form.validate_on_submit():
+        char_id = form.id.data
+        if not getCharacter(char_id):
+            flash("Ваш персонаж не найден в базе данных", "error")
+        else:
+            getCharToUser(current_user.get_id(), char_id)
+            flash("Все получилось", "success")
+            redirect(url_for("show_char"))
+    return render_template("get_char.html", menu=menu, title="Персонаж", form=form)
+
+
+
+@app.route("/profile/show_char", methods=["POST", "GET"])
+@login_required
+def show_char():
+    char = getCharacterByUserId(current_user.get_id())
+    if not char:
+        redirect(url_for(get_char))
+    info = in_web_presentation(char)
+    return render_template("show_char.html", menu=menu, title="Персонаж", info=info)
+
 
 
 if __name__ == "__main__":
     app.run(debug=True)
 
-# #
+#
 # if __name__ == "__main__":
 #     app.run(host='0.0.0.0')
-
+#

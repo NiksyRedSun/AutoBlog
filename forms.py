@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, BooleanField, PasswordField, TextAreaField
+from wtforms import StringField, SubmitField, BooleanField, PasswordField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired, Email, Length, EqualTo
 
 
@@ -21,6 +21,11 @@ class RegisterForm(FlaskForm):
 class PostForm(FlaskForm):
     post = TextAreaField("Поле", validators=[Length(min=30, max=300, message="Должен быть от 30 до 300 символов")])
     submit = SubmitField("Загрузить")
+
+
+class GetCharForm(FlaskForm):
+    id = IntegerField("ID персонажа", validators=[DataRequired()])
+    submit = SubmitField("Подключить персонажа")
 
 
 def DeletePostsForm(posts):

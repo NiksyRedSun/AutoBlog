@@ -49,6 +49,16 @@ div.text{
     width: 90%;
 }
 
+div.show_char{
+    font-size: 30px;
+    font-weight: bold;
+    padding: 0% 1% 1% 1%;
+    color: #203c93;
+    font-family: 'Ubuntu Mono', monospace;
+    text-align: center;
+    width: 100%;
+}
+
 div.dateandtime{
     font-size: 40px;
     font-weight: bold;
@@ -62,6 +72,7 @@ div.dateandtime{
 
 textarea {
     width: 99%;
+    resize: none;
     font-size: 30px;
     color: #203c93;
     font-family: 'Ubuntu Mono', monospace;

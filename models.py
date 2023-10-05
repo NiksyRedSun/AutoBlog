@@ -25,29 +25,85 @@ class Posts(db.Model):
         return f"post_id: {self.id}, post_author: {self.usr}, post_time: {str(self.time)}"
 
 
-def addUser(name, hash):
+
+class Characters(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    story = db.Column(db.Text)
+    hp = db.Column(db.Integer)
+    max_hp = db.Column(db.Integer)
+    attack = db.Column(db.Integer)
+    defense = db.Column(db.Integer)
+    initiative = db.Column(db.Integer)
+    points = db.Column(db.Integer)
+    money = db.Column(db.Integer)
+    level = db.Column(db.Integer)
+    exp = db.Column(db.Integer)
+    next_level_exp = db.Column(db.Integer)
+    autosave = db.Column(db.Boolean, nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
+
+    def __repr__(self):
+        return f"Char id: {self.id}, char name: {self.name}"
+
+def getCharacter(char_id):
     try:
-        u = Users(name=name, psw=hash)
-        db.session.add(u) #добавляет запись в сессию
-        db.session.flush() #перемещает запись из сессии в таблицу
-        db.session.commit()
-        return True
+        u = Characters.query.get(char_id)
+        if not u:
+            print("Пользователь не найден")
+            return False
+        return u
     except:
-        db.session.rollback()
-        print("Что-то пошло не так при добавлении пользователя в бд")
+        print("Что-то пошло не так при загрузке пользователя")
+
+
+def getCharToUser(id, char_id):
+    with db.session() as s:
+        try:
+            u = Characters.query.get(char_id)
+            u.user_id = id
+            s.commit()
+            return u
+        except:
+            print("Что-то пошло не так при загрузке пользователя")
+
+
+def getCharacterByUserId(user_id):
+    try:
+        u = Characters.query.filter_by(user_id=user_id).first()
+        if not u:
+            print("Пользователь не найден")
+            return False
+        return u
+    except:
+        print("Что-то пошло не так при загрузке пользователя")
+
+
+def addUser(name, hash):
+    with db.session() as s:
+        try:
+            u = Users(name=name, psw=hash)
+            s.add(u) #добавляет запись в сессию
+            s.flush() #перемещает запись из сессии в таблицу
+            s.commit()
+            return True
+        except:
+            db.session.rollback()
+            print("Что-то пошло не так при добавлении пользователя в бд")
 
 
 
 def addPost(postauthor, posttext):
-    try:
-        p = Posts(usr=postauthor, text=posttext, time=datetime.now(), string_time=datetime.now().strftime("%H:%M %d.%m.%Y"))
-        db.session.add(p) #добавляет запись в сессию
-        db.session.flush() #перемещает запись из сессии в таблицу
-        db.session.commit()
-        return True
-    except:
-        db.session.rollback()
-        print("Что-то пошло не так при добавлении поста")
+    with db.session() as s:
+        try:
+            p = Posts(usr=postauthor, text=posttext, time=datetime.now(), string_time=datetime.now().strftime("%H:%M %d.%m.%Y"))
+            s.add(p) #добавляет запись в сессию
+            s.flush() #перемещает запись из сессии в таблицу
+            s.commit()
+            return True
+        except:
+            db.session.rollback()
+            print("Что-то пошло не так при добавлении поста")
 
 
 def getTenPosts():
@@ -69,7 +125,7 @@ def getUserByName(name):
 
 def getUser(user_id):
     try:
-        u = Users.query.filter_by(id=user_id)[0]
+        u = Users.query.get(user_id)
         if not u:
             print("Пользователь не найден")
             return False
