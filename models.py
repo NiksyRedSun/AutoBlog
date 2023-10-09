@@ -46,6 +46,41 @@ class Characters(db.Model):
     def __repr__(self):
         return f"Char id: {self.id}, char name: {self.name}"
 
+
+
+
+class Statistics(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    mobKill = db.Column(db.Integer)
+    bossKill = db.Column(db.Integer)
+    death = db.Column(db.Integer)
+    itemsUsed = db.Column(db.Integer)
+    moneySpend = db.Column(db.Integer)
+    fountainHealing = db.Column(db.Integer)
+    hits = db.Column(db.Integer)
+    criticalHits = db.Column(db.Integer)
+    successAvoiding = db.Column(db.Integer)
+    leavingBossFights = db.Column(db.Integer)
+    leavingMobFights = db.Column(db.Integer)
+    char_id = db.Column(db.Integer, db.ForeignKey("characters.id"), nullable=True)
+
+    def __repr__(self):
+        return f"Stat id: {self.id}, char id: {self.char_id}"
+
+
+def getStatistic(char_id):
+    try:
+        s = Statistics.query.filter_by(char_id=char_id).first()
+        if not s:
+            print("Статистика не найдена")
+            return False
+        return s
+    except:
+        print("Что-то пошло не так при загрузке статистики")
+
+
+
+
 def getCharacter(char_id):
     try:
         u = Characters.query.get(char_id)

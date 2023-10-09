@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from forms import LoginForm, RegisterForm, PostForm, GetCharForm
 from admin.admin import admin
 from manyFunc import badlang_correct, in_web_presentation
-from models import db, Users, Posts, addPost, addUser, getTenPosts, getUserByName, getUser, getCharacter, getCharToUser, getCharacterByUserId
+from models import db, Users, Posts, addPost, addUser, getTenPosts, getUserByName, getUser, getCharacter, getCharToUser, getCharacterByUserId, getStatistic
 from flask_migrate import Migrate
 
 
@@ -143,8 +143,10 @@ def show_char():
     char = getCharacterByUserId(current_user.get_id())
     if not char:
         redirect(url_for(get_char))
+    stat = getStatistic(char.id)
+    print(type(stat))
     info = in_web_presentation(char)
-    return render_template("show_char.html", menu=menu, title="Персонаж", info=info)
+    return render_template("show_char.html", menu=menu, title="Персонаж", info=info, stat=stat)
 
 
 

@@ -31,8 +31,8 @@ def in_web_presentation(self):
             count += len(i)
         return result
 
-    pres_name = "+" + self.name.center(28, "-") + "+"
-    pres_level = "+" + ("Уровень: " + str(self.level)).center(28, "-") + "+"
+    pres_name = "+" + self.name.center(22, "-") + "+"
+    pres_level = "+" + ("Уровень: " + str(self.level)).center(22, "-") + "+"
     text = [
         f"{pres_name}",
         make_short_string(self.story, 26),

@@ -13,6 +13,14 @@ div.post{
     /*width: 80%;*/
 }
 
+div.post.char{
+    margin: 1.5% 13.5% 3% 13.5%;
+    border: solid #0a1237 6pt;
+    border-radius: 40px;
+    background-color: #f1ebe0;
+    width: 35%;
+}
+
 div.flMsg.success{
     font-size: 20px;
     font-weight: bold;
