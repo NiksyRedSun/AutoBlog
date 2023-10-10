@@ -4,10 +4,10 @@ from UserLogin import UserLogin
 import sqlite3
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
-from forms import LoginForm, RegisterForm, PostForm, GetCharForm
+from forms import LoginForm, RegisterForm, PostForm, GetCharForm, ItemsPostForm
 from admin.admin import admin
-from manyFunc import badlang_correct, in_web_presentation
-from models import db, Users, Posts, addPost, addUser, getTenPosts, getUserByName, getUser, getCharacter, getCharToUser, getCharacterByUserId, getStatistic
+from manyFunc import badlang_correct, in_web_presentation, check_sum
+from models import db, Users, Posts, addPost, addUser, getTenPosts, getUserByName, getUser, getCharacter, getCharToUser, getCharacterByUserId, getStatistic, getItems, postItems
 from flask_migrate import Migrate
 
 
@@ -143,10 +143,19 @@ def show_char():
     char = getCharacterByUserId(current_user.get_id())
     if not char:
         redirect(url_for(get_char))
+    form = ItemsPostForm(char.items_available)
     stat = getStatistic(char.id)
-    print(type(stat))
     info = in_web_presentation(char)
-    return render_template("show_char.html", menu=menu, title="Персонаж", info=info, stat=stat)
+    if form.validate_on_submit():
+        if check_sum(form):
+            if postItems(char.id, form):
+                flash("Все получилось", "success")
+            else:
+                flash("Что-то пошло не так", "error")
+        else:
+            flash("Количество очков больше 6и", "error")
+    form = getItems(char.id, form)
+    return render_template("show_char.html", menu=menu, title="Персонаж", info=info, stat=stat, char=char, form=form)
 
 
 

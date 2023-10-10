@@ -67,6 +67,19 @@ div.show_char{
     width: 100%;
 }
 
+div.show_char.razd{
+    font-size: 30px;
+    font-weight: bold;
+    padding: 0% 1% 1% 1%;
+    color: #203c93;
+    font-family: 'Ubuntu Mono', monospace;
+    text-align: center;
+    align-self: center;
+    width: 100%;
+}
+
+
+
 div.dateandtime{
     font-size: 40px;
     font-weight: bold;
@@ -122,6 +135,12 @@ input {
 form {
     margin-left: 3%;
     width: 50%;
+    /*display: flex;*/
+}
+
+form.items {
+    margin-left: 3%;
+    width: 90%;
     /*display: flex;*/
 }
 

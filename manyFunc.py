@@ -49,4 +49,12 @@ def in_web_presentation(self):
     return text
 
 
+def check_sum(form):
+    for i in range(1, form.itemNum + 1):
+        if getattr(form, f"itemMaxHp{i}").data + getattr(form, f"itemAttack{i}").data + getattr(form, f"itemDefense{i}").data + getattr(form, f"itemInitiative{i}").data > 6:
+            return False
+    return True
+
+
+
 

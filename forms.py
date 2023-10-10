@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, BooleanField, PasswordField, TextAreaField, IntegerField
-from wtforms.validators import DataRequired, Email, Length, EqualTo
+from wtforms.validators import DataRequired, Email, Length, EqualTo, NumberRange
 
 
 class LoginForm(FlaskForm):
@@ -42,3 +42,20 @@ def DeletePostsForm(posts):
     form = DeletePostForm()
     return form, ids
 
+
+def ItemsPostForm(num):
+    class ItemsPostForm(FlaskForm):
+        pass
+
+    ItemsPostForm.submit = SubmitField("Обновить вещи")
+    setattr(ItemsPostForm, "itemNum", num)
+    for i in range(1, num+1):
+        setattr(ItemsPostForm, f"itemName{i}", StringField(f"Название вещи {i}", validators=[Length(min=4, max=100, message="Должно быть от 4 до 100 символов")]))
+        setattr(ItemsPostForm, f"itemMaxHp{i}", IntegerField(f"Подъем hp", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
+        setattr(ItemsPostForm, f"itemAttack{i}", IntegerField(f"Подъем атаки", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
+        setattr(ItemsPostForm, f"itemDefense{i}", IntegerField(f"Подъем защиты", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
+        setattr(ItemsPostForm, f"itemInitiative{i}", IntegerField(f"Подъем ловкости", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
+        setattr(ItemsPostForm, f"forAttack{i}", BooleanField(f"Используется для атаки", default=False))
+
+    form = ItemsPostForm()
+    return form
