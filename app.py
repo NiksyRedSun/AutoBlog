@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from forms import LoginForm, RegisterForm, PostForm, GetCharForm, ItemsPostForm
 from admin.admin import admin
 from manyFunc import badlang_correct, in_web_presentation, check_sum
-from models import db, Users, Posts, addPost, addUser, getTenPosts, getUserByName, getUser, getCharacter, getCharToUser, getCharacterByUserId, getStatistic, getItems, postItems
+from models import db, addPost, addUser, getTenPosts, getUserByName, getUser, getCharacter, getCharToUser, getCharacterByUserId, getStatistic, getItemsByChar, itemToForm, postItem, putItem
 from flask_migrate import Migrate
 
 
@@ -143,19 +143,38 @@ def show_char():
     char = getCharacterByUserId(current_user.get_id())
     if not char:
         redirect(url_for(get_char))
-    form = ItemsPostForm(char.items_available)
+
+    items = getItemsByChar(char.id) #получаем имеющиеся вещи чара
+    forms = [ItemsPostForm(i)() for i in range(char.items_available)] #создаем столько форм, сколько доступно вещей
     stat = getStatistic(char.id)
     info = in_web_presentation(char)
-    if form.validate_on_submit():
-        if check_sum(form):
-            if postItems(char.id, form):
-                flash("Все получилось", "success")
+
+
+    for count, form in enumerate(forms):
+        if form.validate_on_submit() and form.submit.data:
+            if form.itemId is not None:
+                if check_sum(form):
+                    if putItem(form):
+                        flash("Инвентарь успешно обновлен", "success")
+                    else:
+                        flash("Что-то пошло не так", "error")
+                else:
+                    flash("Количество очков больше 6и, инвентарь не обновлен", "error")
+
             else:
-                flash("Что-то пошло не так", "error")
-        else:
-            flash("Количество очков больше 6и", "error")
-    form = getItems(char.id, form)
-    return render_template("show_char.html", menu=menu, title="Персонаж", info=info, stat=stat, char=char, form=form)
+                if check_sum(form):
+                    if postItem(char.id, form):
+                        flash("Инвентарь успешно обновлен", "success")
+                    else:
+                        flash("Что-то пошло не так", "error")
+                else:
+                    flash("Количество очков больше 6и, инвентарь не обновлен", "error")
+
+    # if items:
+    #     for i in range(len(items)):
+    #         itemToForm(items[i], forms[i])
+
+    return render_template("show_char.html", menu=menu, title="Персонаж", info=info, stat=stat, char=char, forms=forms)
 
 
 

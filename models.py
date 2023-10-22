@@ -84,8 +84,6 @@ class Items(db.Model):
         return f"Item id: {self.id}, char id: {self.char_id}, item name: {self.itemName}"
 
 
-
-
 def getItem(item_id):
     with db.session() as s:
         try:
@@ -95,40 +93,57 @@ def getItem(item_id):
             print("Что-то пошло не так при загрузке вещи")
 
 
-def getItems(char_id, form):
+
+# def getItemToForm(char_id, form):
+#     with db.session() as s:
+#         try:
+#             its = Items.query.filter_by(char_id=char_id).all()
+#             if not its:
+#                 print("Вещей не найдено")
+#                 return form
+#             for num, item in enumerate(its, start=1):
+#                 getattr(form, f"itemName{num}").data = item.itemName
+#                 getattr(form, f"itemMaxHp{num}").data = item.itemMaxHp
+#                 getattr(form, f"itemAttack{num}").data = item.itemAttack
+#                 getattr(form, f"itemDefense{num}").data = item.itemDefense
+#                 getattr(form, f"itemInitiative{num}").data = item.itemInitiative
+#                 getattr(form, f"forAttack{num}"). data = item.forAttack
+#             return form
+#         except:
+#             print("Что-то пошло не так при загрузке вещей")
+#
+
+def getItemsByChar(char_id):
     with db.session() as s:
         try:
             its = Items.query.filter_by(char_id=char_id).all()
             if not its:
                 print("Вещей не найдено")
-                return form
-            for num, item in enumerate(its, start=1):
-                getattr(form, f"itemName{num}").data = item.itemName
-                getattr(form, f"itemMaxHp{num}").data = item.itemMaxHp
-                getattr(form, f"itemAttack{num}").data = item.itemAttack
-                getattr(form, f"itemDefense{num}").data = item.itemDefense
-                getattr(form, f"itemInitiative{num}").data = item.itemInitiative
-                getattr(form, f"forAttack{num}"). data = item.forAttack
-            return form
+                return False
+            else:
+                return its
         except:
             print("Что-то пошло не так при загрузке вещей")
 
 
+def itemToForm(item, form):
+    getattr(form, f"itemName").data = item.itemName
+    getattr(form, f"itemMaxHp").data = item.itemMaxHp
+    getattr(form, f"itemAttack").data = item.itemAttack
+    getattr(form, f"itemDefense").data = item.itemDefense
+    getattr(form, f"itemInitiative").data = item.itemInitiative
+    getattr(form, f"forAttack").data = item.forAttack
+    form.itemId = item.id
 
-#знаю что костыльно, может быть когда-нибудь потом исправлю, пока сосредоточимся на решении задачи
-def postItems(char_id, form):
+
+def postItem(char_id, form):
     with db.session() as s:
         try:
-            its = Items.query.filter_by(char_id=char_id).all()
-            if its:
-                for item in its:
-                    s.delete(item)
-            for i in range(1, form.itemNum+1):
-                it = Items(itemName=getattr(form, f"itemName{i}").data, itemMaxHp=getattr(form, f"itemMaxHp{i}").data,
-                           itemAttack=getattr(form, f"itemAttack{i}").data, itemDefense=getattr(form, f"itemDefense{i}").data,
-                           itemInitiative=getattr(form, f"itemInitiative{i}").data, forAttack=getattr(form, f"forAttack{i}").data,
-                           char_id=char_id)
-                s.add(it)
+            it = Items(itemName=getattr(form, f"itemName").data, itemMaxHp=getattr(form, f"itemMaxHp").data,
+                       itemAttack=getattr(form, f"itemAttack").data, itemDefense=getattr(form, f"itemDefense").data,
+                       itemInitiative=getattr(form, f"itemInitiative").data, forAttack=getattr(form, f"forAttack").data,
+                       char_id=char_id)
+            s.add(it)
             s.commit()
             return True
         except Exception as e:
@@ -137,23 +152,37 @@ def postItems(char_id, form):
             print("Что-то пошло не так при загрузке вещей")
 
 
-# def putItems(char_id, form):
+# def putItem(form):
 #     with db.session() as s:
 #         try:
-#             its = Items.query.filter_by(char_id=char_id).all()
-#
-#             for i in form.num:
-#                 it = Items(itemName=getattr(form, f"itemName{i}").data, itemMaxHp=getattr(form, f"itemMaxHp{i}").data,
-#                            itemAttack=getattr(form, f"itemAttack{i}").data,
-#                            itemDefense=getattr(form, f"itemDefense{i}").data,
-#                            itemInitiative=getattr(form, f"itemInitiative{i}").data,
-#                            forAttack=getattr(form, f"forAttack{i}").data,
-#                            char_id=id)
-#                 s.flush(it)
-#                 s.add(it)
+#             it = Items(itemName=getattr(form, f"itemName").data, itemMaxHp=getattr(form, f"itemMaxHp").data,
+#                        itemAttack=getattr(form, f"itemAttack{i}").data,
+#                        itemDefense=getattr(form, f"itemDefense{i}").data,
+#                        itemInitiative=getattr(form, f"itemInitiative{i}").data,
+#                        forAttack=getattr(form, f"forAttack{i}").data,
+#                        char_id=id)
+#             s.flush(it)
+#             s.add(it)
 #             s.commit()
 #         except:
 #             print("Что-то пошло не так при обновлении вещей")
+
+
+def putItem(form):
+    with db.session() as s:
+        try:
+            it = Items.query.get(form.itemId)
+            it.itemName = form.itemName.data
+            it.itemMaxHp = form.itemMaxHp.data
+            it.itemAttack = form.itemAttack.data
+            it.itemDefense = form.itemDefense.data
+            it.itemInitiative = form.itemInitiative.data
+            it.forAttack = form.forAttack.data
+            s.add(it)
+            s.commit()
+            return True
+        except:
+            print("Что-то пошло не так при обновлении вещи")
 
 
 def getStatistic(char_id):

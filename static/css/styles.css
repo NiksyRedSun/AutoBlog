@@ -37,6 +37,16 @@ div.flMsg.error{
     font-family: 'Ubuntu Mono', monospace;
 }
 
+
+div.flMsg.errorInv{
+    font-size: 20px;
+    font-weight: bold;
+    color: #69172b;
+    font-family: 'Ubuntu Mono', monospace;
+}
+
+
+
 div.nickname{
     font-size: 40px;
     font-weight: bold;
@@ -114,14 +124,28 @@ p.linename {
     font-family: 'Ubuntu Mono', monospace;
     margin-block-end: 0px;
     margin-block-start: 0px;
-    padding-bottom: 3%;
+    padding-bottom: 1%;
+    padding-top: 3%;
+}
+
+
+div.linename {
+    font-size: 40px;
+    font-weight: bold;
+    /*padding: 0% 3% 3% 3%;*/
+    color: #203c93;
+    font-family: 'Ubuntu Mono', monospace;
+    margin-block-end: 0px;
+    margin-block-start: 0px;
+    padding-bottom: 1%;
+    padding-top: 3%;
+    text-align: center;
 }
 
 
 input {
     margin-block-end: 0px;
     margin-block-start: 0px;
-    padding-bottom: 1%;
     margin-bottom: 1%;
     color: #203c93;
     font-size: 30px;

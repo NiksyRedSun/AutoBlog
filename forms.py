@@ -42,20 +42,44 @@ def DeletePostsForm(posts):
     form = DeletePostForm()
     return form, ids
 
+#
+#
+# def ItemsPostForm(num):
+#
+#
+#
+#     class ItemsPostForm(FlaskForm):
+#         pass
+#
+#
+#     setattr(ItemsPostForm, f"itemName", StringField(f"Название вещи", validators=[Length(min=4, max=100, message="Должно быть от 4 до 100 символов")]))
+#     setattr(ItemsPostForm, f"itemMaxHp", IntegerField(f"Подъем hp", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
+#     setattr(ItemsPostForm, f"itemAttack", IntegerField(f"Подъем атаки", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
+#     setattr(ItemsPostForm, f"itemDefense", IntegerField(f"Подъем защиты", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
+#     setattr(ItemsPostForm, f"itemInitiative", IntegerField(f"Подъем ловкости", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
+#     setattr(ItemsPostForm, f"forAttack", BooleanField(f"Используется для атаки", default=False))
+#     setattr(ItemsPostForm, f"submit{num}", SubmitField(f"Обновить вещь {num+1}"))
+#     setattr(ItemsPostForm, f"itemId", None)
+#
+#     form = ItemsPostForm()
+#     return form
+
 
 def ItemsPostForm(num):
-    class ItemsPostForm(FlaskForm):
-        pass
 
-    ItemsPostForm.submit = SubmitField("Обновить вещи")
-    setattr(ItemsPostForm, "itemNum", num)
-    for i in range(1, num+1):
-        setattr(ItemsPostForm, f"itemName{i}", StringField(f"Название вещи {i}", validators=[Length(min=4, max=100, message="Должно быть от 4 до 100 символов")]))
-        setattr(ItemsPostForm, f"itemMaxHp{i}", IntegerField(f"Подъем hp", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
-        setattr(ItemsPostForm, f"itemAttack{i}", IntegerField(f"Подъем атаки", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
-        setattr(ItemsPostForm, f"itemDefense{i}", IntegerField(f"Подъем защиты", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
-        setattr(ItemsPostForm, f"itemInitiative{i}", IntegerField(f"Подъем ловкости", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
-        setattr(ItemsPostForm, f"forAttack{i}", BooleanField(f"Используется для атаки", default=False))
 
-    form = ItemsPostForm()
+    form = type(f"ItemsPostForm{num}", (FlaskForm, ), {
+
+        # data members
+        f"itemName": StringField(f"Название вещи", validators=[Length(min=4, max=100, message="Должно быть от 4 до 100 символов")]),
+        f"itemMaxHp": IntegerField(f"Подъем hp", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]),
+        f"itemAttack": IntegerField(f"Подъем атаки", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]),
+        f"itemDefense": IntegerField(f"Подъем защиты", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]),
+        f"itemInitiative": IntegerField(f"Подъем ловкости", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]),
+        f"forAttack": BooleanField(f"Используется для атаки", default=False),
+        f"submit{num}": SubmitField(f"Обновить вещь {num + 1}"),
+        f"itemId": None,
+    })
+
+
     return form

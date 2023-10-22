@@ -40,27 +40,32 @@
         <div class="flMsg {{cat}}">{{msg}}</div>
         {% endfor %}
 
+
+            {% for form in forms %}
             <form action="" method="post" class="items">
             {{ form.hidden_tag() }}
-            {% for field in form if field.name not in ['csrf_token', 'submit'] %}
+            {% for field in form if field.name not in ['csrf_token']%}
+                {% if field.name not in ['forAttack'] and field.type != "SubmitField" %}
                 <p class="linename">{{ field.label() }}</p>
+                {% endif %}
                 {% if field.errors %}
                     {{ field(class="invalid")}}
-                <span class="invalid-feedback">
-                    {% for e in field.errors %}
-                    {{ e }}
-                    {% endfor %}
-                </span>
+                {% for e in field.errors %}
+                <div class="flMsg errorInv">{{ e }}</div>
+                {% endfor %}
+                {% else %}
+                {% if field.name in ['forAttack'] %}
+                <p class="linename">{{ form.forAttack() }} {{ form.forAttack.label() }} </p>
                 {% else %}
                 {{ field() }}
                 {% endif %}
-                {% if field.type == "BooleanField" %}
-                <div class="show_char razd">--------------------****--------------------</div>
-                {% else %}
                 {% endif %}
             {% endfor %}
-            <p>{{ form.submit() }}</p>
+                <div class="linename">*******</div>
+            {% endfor %}
             </form>
+
+
         <div class="dateandtime">////////////////</div>
         </div>
     <div class="sign-wrap-3">
