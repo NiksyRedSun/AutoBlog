@@ -119,12 +119,21 @@ def getItemsByChar(char_id):
             its = Items.query.filter_by(char_id=char_id).all()
             if not its:
                 print("Вещей не найдено")
-                return False
+                return its
             else:
                 return its
         except:
             print("Что-то пошло не так при загрузке вещей")
 
+
+def makeEmptyItem(char_id):
+    with db.session() as s:
+        try:
+            it = Items(char_id=char_id)
+            s.add(it)
+            s.commit()
+        except:
+            print("Что-то пошло не так при создании вещи")
 
 def itemToForm(item, form):
     getattr(form, f"itemName").data = item.itemName

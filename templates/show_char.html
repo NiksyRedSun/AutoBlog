@@ -36,34 +36,11 @@
         <div class="text"> В общем-то все просто. Каждая вещь представляет из себя 6 очков, которые можно по желанию вложить во что угодно.
         Ловкость идет за 3 очка, все остальное по 1му. Если вещь используется для атаки, периодически во время игры будет выводиться сообщение об использовании оружия.</div>
         <div class="show_char">Вещей доступно: {{char.items_available}}</div>
-        {% for cat, msg in get_flashed_messages(True) %}
-        <div class="flMsg {{cat}}">{{msg}}</div>
-        {% endfor %}
-
-
-            {% for form in forms %}
-            <form action="" method="post" class="items">
-            {{ form.hidden_tag() }}
-            {% for field in form if field.name not in ['csrf_token']%}
-                {% if field.name not in ['forAttack'] and field.type != "SubmitField" %}
-                <p class="linename">{{ field.label() }}</p>
-                {% endif %}
-                {% if field.errors %}
-                    {{ field(class="invalid")}}
-                {% for e in field.errors %}
-                <div class="flMsg errorInv">{{ e }}</div>
-                {% endfor %}
-                {% else %}
-                {% if field.name in ['forAttack'] %}
-                <p class="linename">{{ form.forAttack() }} {{ form.forAttack.label() }} </p>
-                {% else %}
-                {{ field() }}
-                {% endif %}
-                {% endif %}
+            <div class="form">
+            {% for i in range(length) %}
+            <p class="linename"><a href="{{ url_for('show_item', id=itemsIds[i])}}">Вещь {{i+1}}</a></p>
             {% endfor %}
-                <div class="linename">*******</div>
-            {% endfor %}
-            </form>
+            </div>
 
 
         <div class="dateandtime">////////////////</div>

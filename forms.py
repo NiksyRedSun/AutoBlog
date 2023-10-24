@@ -78,6 +78,7 @@ def ItemsPostForm(num):
         f"itemInitiative": IntegerField(f"Подъем ловкости", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]),
         f"forAttack": BooleanField(f"Используется для атаки", default=False),
         f"submit{num}": SubmitField(f"Обновить вещь {num + 1}"),
+        f"formNum": num,
         f"itemId": None,
     })
 
