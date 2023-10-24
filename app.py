@@ -16,7 +16,7 @@ SECRET_KEY = "#asgfkjdklsfgjserutdfg-09423"
 SQLALCHEMY_DATABASE_URI = "sqlite:///blog.db"
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 app.config.from_object(__name__)
 
 
@@ -121,7 +121,6 @@ def profile():
 
 
 
-
 @app.route("/profile/get_char", methods=["POST", "GET"])
 @login_required
 def get_char():
@@ -143,7 +142,7 @@ def get_char():
 def show_char():
     char = getCharacterByUserId(current_user.get_id())
     if not char:
-        redirect(url_for(get_char))
+        redirect(url_for("get_char"))
 
     items = getItemsByChar(char.id) #получаем имеющиеся вещи чара
     if char.items_available != len(items):
@@ -163,31 +162,33 @@ def show_char():
 @app.route("/profile/show_char/item/<id>", methods=["POST", "GET"])
 @login_required
 def show_item(id):
+    char = getCharacterByUserId(current_user.get_id())
+    items = getItemsByChar(char.id)
+    itemsIds = list(map(lambda x: x.id, items))
+
+    if int(id) not in itemsIds:
+        return redirect(url_for("not_your_item"))
+
     item = getItem(id)
+    form = ItemsPostForm()
 
-    form = ItemsPostForm(i)
+    if form.validate_on_submit():
+        if check_sum(form):
+            if putItem(form, item):
+                flash("Вещь успешно обновлена", "success")
+            else:
+                flash("Что-то пошло не так", "error")
+        else:
+            flash("В сумме выходит больше 6и очков", "error")
 
-
-    return render_template("show_item.html", menu=menu, title="Персонаж", char=form)
-
+    itemToForm(item, form)
+    return render_template("show_item.html", menu=menu, title="Вещи", form=form)
 
 
 @app.route("/not_your_item", methods=["POST", "GET"])
 @login_required
 def not_your_item():
-    char = getCharacterByUserId(current_user.get_id())
-    if not char:
-        redirect(url_for(get_char))
-
-    items = getItemsByChar(char.id) #получаем имеющиеся вещи чара
-
-    forms = [ItemsPostForm(i)() for i in range(char.items_available)] #создаем столько форм, сколько доступно вещей
-    stat = getStatistic(char.id)
-    info = in_web_presentation(char)
-
-    return render_template("show_char.html", menu=menu, title="Персонаж", info=info, stat=stat, char=char)
-
-
+    return render_template("not_item.html", menu=menu, title="Не та вещь")
 
 
 if __name__ == "__main__":

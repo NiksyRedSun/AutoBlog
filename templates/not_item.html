@@ -1,0 +1,17 @@
+{% extends "base.html"%}
+
+
+{% block content %}
+{{ super() }}
+    <div class="post">
+        <div class="nickname">Инвентарь</div>
+        <div class="text"> Вы пытаетесь добраться до вещи, которая вам не принадлежит, либо даже не существует
+        <p class="linename"><a href="{{ url_for('show_char')}}">Вернуться</a>
+        </div>
+
+        <div class="dateandtime">////////////////</div>
+        </div>
+    <div class="sign-wrap-3">
+        <span class="sign_word">***</span>
+    </div>
+{% endblock %}

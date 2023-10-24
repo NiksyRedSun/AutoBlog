@@ -135,6 +135,7 @@ def makeEmptyItem(char_id):
         except:
             print("Что-то пошло не так при создании вещи")
 
+
 def itemToForm(item, form):
     getattr(form, f"itemName").data = item.itemName
     getattr(form, f"itemMaxHp").data = item.itemMaxHp
@@ -177,10 +178,9 @@ def postItem(char_id, form):
 #             print("Что-то пошло не так при обновлении вещей")
 
 
-def putItem(form):
+def putItem(form, it):
     with db.session() as s:
         try:
-            it = Items.query.get(form.itemId)
             it.itemName = form.itemName.data
             it.itemMaxHp = form.itemMaxHp.data
             it.itemAttack = form.itemAttack.data

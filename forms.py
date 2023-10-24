@@ -42,45 +42,41 @@ def DeletePostsForm(posts):
     form = DeletePostForm()
     return form, ids
 
-#
-#
+
+
+def ItemsPostForm():
+
+    class ItemsPostForm(FlaskForm):
+        pass
+    setattr(ItemsPostForm, f"itemName", StringField(f"Название вещи", validators=[Length(min=4, max=100, message="Должно быть от 4 до 100 символов")]))
+    setattr(ItemsPostForm, f"itemMaxHp", IntegerField(f"Подъем hp", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
+    setattr(ItemsPostForm, f"itemAttack", IntegerField(f"Подъем атаки", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
+    setattr(ItemsPostForm, f"itemDefense", IntegerField(f"Подъем защиты", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
+    setattr(ItemsPostForm, f"itemInitiative", IntegerField(f"Подъем ловкости", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
+    setattr(ItemsPostForm, f"forAttack", BooleanField(f"Используется для атаки", default=False))
+    setattr(ItemsPostForm, f"submit", SubmitField(f"Обновить вещь"))
+    setattr(ItemsPostForm, f"itemId", None)
+
+    form = ItemsPostForm()
+    return form
+
+
 # def ItemsPostForm(num):
 #
 #
+#     form = type(f"ItemsPostForm{num}", (FlaskForm, ), {
 #
-#     class ItemsPostForm(FlaskForm):
-#         pass
+#         # data members
+#         f"itemName": StringField(f"Название вещи", validators=[Length(min=4, max=100, message="Должно быть от 4 до 100 символов")]),
+#         f"itemMaxHp": IntegerField(f"Подъем hp", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]),
+#         f"itemAttack": IntegerField(f"Подъем атаки", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]),
+#         f"itemDefense": IntegerField(f"Подъем защиты", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]),
+#         f"itemInitiative": IntegerField(f"Подъем ловкости", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]),
+#         f"forAttack": BooleanField(f"Используется для атаки", default=False),
+#         f"submit{num}": SubmitField(f"Обновить вещь {num + 1}"),
+#         f"formNum": num,
+#         f"itemId": None,
+#     })
 #
 #
-#     setattr(ItemsPostForm, f"itemName", StringField(f"Название вещи", validators=[Length(min=4, max=100, message="Должно быть от 4 до 100 символов")]))
-#     setattr(ItemsPostForm, f"itemMaxHp", IntegerField(f"Подъем hp", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
-#     setattr(ItemsPostForm, f"itemAttack", IntegerField(f"Подъем атаки", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
-#     setattr(ItemsPostForm, f"itemDefense", IntegerField(f"Подъем защиты", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
-#     setattr(ItemsPostForm, f"itemInitiative", IntegerField(f"Подъем ловкости", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]))
-#     setattr(ItemsPostForm, f"forAttack", BooleanField(f"Используется для атаки", default=False))
-#     setattr(ItemsPostForm, f"submit{num}", SubmitField(f"Обновить вещь {num+1}"))
-#     setattr(ItemsPostForm, f"itemId", None)
-#
-#     form = ItemsPostForm()
 #     return form
-
-
-def ItemsPostForm(num):
-
-
-    form = type(f"ItemsPostForm{num}", (FlaskForm, ), {
-
-        # data members
-        f"itemName": StringField(f"Название вещи", validators=[Length(min=4, max=100, message="Должно быть от 4 до 100 символов")]),
-        f"itemMaxHp": IntegerField(f"Подъем hp", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]),
-        f"itemAttack": IntegerField(f"Подъем атаки", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]),
-        f"itemDefense": IntegerField(f"Подъем защиты", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]),
-        f"itemInitiative": IntegerField(f"Подъем ловкости", validators=[NumberRange(min=0, message="Не должно быть меньше 0")]),
-        f"forAttack": BooleanField(f"Используется для атаки", default=False),
-        f"submit{num}": SubmitField(f"Обновить вещь {num + 1}"),
-        f"formNum": num,
-        f"itemId": None,
-    })
-
-
-    return form

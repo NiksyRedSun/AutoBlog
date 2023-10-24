@@ -129,6 +129,19 @@ p.linename {
 }
 
 
+p.linename.forAttack {
+    font-size: 30px;
+    font-weight: bold;
+    /*padding: 0% 3% 3% 3%;*/
+    color: #203c93;
+    font-family: 'Ubuntu Mono', monospace;
+    margin-block-end: 0px;
+    margin-block-start: 0px;
+    padding-bottom: 4%;
+    padding-top: 3%;
+}
+
+
 div.linename {
     font-size: 40px;
     font-weight: bold;
